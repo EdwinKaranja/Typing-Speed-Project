@@ -1,43 +1,41 @@
-#TODO: 1. Finding a block of text
-#TODO: 2. Getting rules for score (Accuracy and speed)
 
-
-import requests
 import random
 import time
 
-parameters =  {'X-RapidAPI-Key': 'f4461d01e7msheb8c8b5b8e1783ep18e571jsnd397eb155791'}
 
-block = requests.get(url = "webknox-jokes.p.rapidapi.com", params = parameters)
+with open("scratch.txt") as file:
+    data = file.read()
+data = data.split("\n")
+
+quote = (data[random.randint(0, (len(data)-1))])
+while quote == '':
+    quote = (data[random.randint(0, (len(data)-1))])
 
 
-quote = "A green hoarde jumped over the fence to everyone's amazement."
-result = "A gereen hoad ujumped over the fence to everyone's amansxwe"
-
-start_time = time.time()
-#Ways to compare include index by index score, similarity score, word accuracy,
 
 quote_word_list = quote.split()
-
 quote_length = len(quote.split())
-print(quote_length)
-result_word_list = result.split()
-
 
 
 def score_card():
-    #Check how many of the words in the result are in the original file.
-    #Accuracy score should be used to adjust for score.
-    similar_words = []
-    for i in result_word_list:
-        if i in quote_word_list:
-            similar_words.extend(i)
+    start = input("Please select Y to start the game. \n")
+    if start.lower() == 'y':
+        print(quote)
+        start_time = time.time()
+        result = input("You can now Start, the clock is ticking. \n")
 
-    similarity_index = len(similar_words)/quote_length
-    return similarity_index
+        result_word_list = result.split()
+        end_time = time.time()
+        similar_words = []
+        for i in result_word_list:
+            if i in quote_word_list:
+                similar_words.append(i)
 
-you = score_card()
+        similarity_index = len(similar_words)/quote_length
+        minutes_taken = (end_time - start_time)/60
+        typing_speed = len(similar_words)/minutes_taken
+
+        print(f"Your typing speed is {round(typing_speed*similarity_index, 2)} words per minute.")
 
 
-test = input("Let us see how much you wait!")
-print(f"You took {time.time() - start_time} seconds")
+score_card()
